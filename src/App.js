@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 
+import Element from './components/Element/Element'
+
 class App extends Component {
   constructor() {
     super()
@@ -12,6 +14,7 @@ class App extends Component {
 
     this.onChange = this.onChange.bind(this)
     this.addTodo = this.addTodo.bind(this)
+    this.removeTodo = this.removeTodo.bind(this)
   }
 
   onChange (event) {
@@ -32,20 +35,31 @@ class App extends Component {
     }
   }
 
+  removeTodo (index) {
+    this.state.todos.splice(index, 1)
+    this.setState({
+      todos: this.state.todos
+    })
+  }
+
   render() {
     return (
       <form onSubmit={this.addTodo}>
         <h1>
           {this.state.inputValue}
         </h1>
+
         <input type="text" onChange={this.onChange} value={this.state.inputValue}/>
         <button type="submit">Add todo</button>
         <ul>
           {this.state.todos.map((todo, index) => {
             return (
-              <li key={index}>
-                {todo.title}
-              </li>
+              <Element
+                key={index}
+                index={index}
+                element={todo}
+                removeTodoCallback={this.removeTodo}
+              />
             )
           })}
         </ul>
